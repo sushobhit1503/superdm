@@ -57,19 +57,19 @@ const TaskTable = ({ selectedTask, onTaskSelect }) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      console.log (filteredTasksByTab.length);
+      console.log(filteredTasksByTab.length);
       if (filteredTasksByTab.length === 0) {
         setSelectedRowIndex(null);
         return;
       }
-      if (e.key === 'ArrowDown') {
-        setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
-      } else if (e.key === 'ArrowUp') {
-        setSelectedRowIndex((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
-      } else if (e.key === 'Enter' && selectedRowIndex !== null) {
-        onTaskSelect(filteredTasksByTab[selectedRowIndex]);
-      }
       if (!keyHandleDisable()) {
+        if (e.key === 'ArrowDown') {
+          setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
+        } else if (e.key === 'ArrowUp') {
+          setSelectedRowIndex((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
+        } else if (e.key === 'Enter' && selectedRowIndex !== null) {
+          onTaskSelect(filteredTasksByTab[selectedRowIndex]);
+        }
         if (e.key === 'ArrowRight' && selectedTask) {
           setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
           onTaskSelect(filteredTasksByTab[selectedRowIndex]);
@@ -78,9 +78,9 @@ const TaskTable = ({ selectedTask, onTaskSelect }) => {
           onTaskSelect(filteredTasksByTab[selectedRowIndex]);
         }
       }
-      
+
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
