@@ -57,6 +57,11 @@ const TaskTable = ({ selectedTask, onTaskSelect }) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      console.log (filteredTasksByTab.length);
+      if (filteredTasksByTab.length === 0) {
+        setSelectedRowIndex(null);
+        return;
+      }
       if (e.key === 'ArrowDown') {
         setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
       } else if (e.key === 'ArrowUp') {
@@ -80,7 +85,7 @@ const TaskTable = ({ selectedTask, onTaskSelect }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [tasks, selectedRowIndex, onTaskSelect]);
+  }, [tasks, selectedRowIndex, onTaskSelect, filteredTasksByTab]);
 
   return (
     <InfiniteScroll
