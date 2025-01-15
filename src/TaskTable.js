@@ -4,6 +4,7 @@ import { tasksState, activeTabState, paginationState, searchState, sortingState 
 import { fetchTasksForTab } from './api';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Badge, Table } from 'reactstrap';
+import { keyHandleDisable } from './utils';
 
 const TaskTable = ({ selectedTask, onTaskSelect }) => {
   const [tasks, setTasks] = useRecoilState(tasksState);
@@ -63,13 +64,16 @@ const TaskTable = ({ selectedTask, onTaskSelect }) => {
       } else if (e.key === 'Enter' && selectedRowIndex !== null) {
         onTaskSelect(filteredTasksByTab[selectedRowIndex]);
       }
-      if (e.key === 'ArrowRight' && selectedTask) {
-        setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
-        onTaskSelect(filteredTasksByTab[selectedRowIndex]);
-      } else if (e.key === 'ArrowLeft' && selectedTask) {
-        setSelectedRowIndex((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
-        onTaskSelect(filteredTasksByTab[selectedRowIndex]);
+      if (!keyHandleDisable()) {
+        if (e.key === 'ArrowRight' && selectedTask) {
+          setSelectedRowIndex((prev) => (prev === null ? 0 : Math.min(prev + 1, tasks.length - 1)));
+          onTaskSelect(filteredTasksByTab[selectedRowIndex]);
+        } else if (e.key === 'ArrowLeft' && selectedTask) {
+          setSelectedRowIndex((prev) => (prev === null ? 0 : Math.max(prev - 1, 0)));
+          onTaskSelect(filteredTasksByTab[selectedRowIndex]);
+        }
       }
+      
     };
     
     window.addEventListener('keydown', handleKeyDown);

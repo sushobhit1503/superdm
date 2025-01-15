@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Input, ModalFooter, Button } from 'reactstrap';
 import { useRecoilState } from 'recoil';
 import { tasksState } from './atoms';
+import { keyHandleDisable } from './utils';
 
 const TaskModal = ({ task, isOpen, toggle }) => {
   const [tasks, setTasks] = useRecoilState(tasksState);
@@ -15,9 +16,11 @@ const TaskModal = ({ task, isOpen, toggle }) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === '1') setNewStatus('OPEN');
-      if (e.key === '2') setNewStatus('IN PROGRESS');
-      if (e.key === '3') setNewStatus('CLOSED');
+      if (!keyHandleDisable()) {
+        if (e.key === '1') setNewStatus('OPEN');
+        if (e.key === '2') setNewStatus('IN PROGRESS');
+        if (e.key === '3') setNewStatus('CLOSED');
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
